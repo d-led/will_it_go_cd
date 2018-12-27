@@ -128,6 +128,9 @@
                 <arg>10</arg>
               </exec>
             </tasks>
+            <resources>
+              <resource>security</resource>
+            </resources>
           </job>
         </jobs>
       </stage>
@@ -159,6 +162,28 @@
               <exec command="cat">
                 <arg>sleep.txt</arg>
                 <runif status="passed" />
+              </exec>
+            </tasks>
+            <resources>
+              <resource>nonexistent_resource</resource>
+            </resources>
+          </job>
+        </jobs>
+      </stage>
+    </pipeline>
+  </pipelines>
+  <pipelines group="neat">
+    <pipeline name="nice">
+      <materials>
+        <pipeline pipelineName="something_complex" stageName="build" />
+      </materials>
+      <stage name="defaultStage">
+        <jobs>
+          <job name="defaultJob">
+            <tasks>
+              <exec command="bash">
+                <arg>-c</arg>
+                <arg>ls</arg>
               </exec>
             </tasks>
           </job>
@@ -212,6 +237,7 @@
         <resource>gradle</resource>
         <resource>java</resource>
         <resource>lua</resource>
+        <resource>security</resource>
       </resources>
     </agent>
     <agent hostname="6bb34abe42aa" ipaddress="172.18.0.6" uuid="76b133b9-32b8-4673-ac43-c415bc69e69b">
