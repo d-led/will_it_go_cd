@@ -56,6 +56,7 @@ namespace willitgocd
 
         private void Run()
         {
+            Separator();         
             ShowAgents();
             Separator();
             ShowJobsBuiltByAgents();
