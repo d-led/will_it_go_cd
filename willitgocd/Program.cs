@@ -46,11 +46,33 @@ namespace willitgocd
                 Uuid = a.Uuid
             });
 
+            Console.WriteLine("Agents:\n");
             ConsoleTableBuilder
                 .From(agents.ToList())
                 .WithFormat(ConsoleTableBuilderFormat.Minimal)
                 .ExportAndWriteLine()
             ;
+
+            var jobsBuiltByAgents = analysis.JobsToAgents;
+            foreach (var agentCapability in jobsBuiltByAgents) {
+                Console.WriteLine($"Jobs that can be built by {agentCapability.Id}:");
+
+                var jobs = agentCapability
+                    .Jobs
+                    .Select(j=>new {
+                        Pipeline = j.Pipeline,
+                        Stage = j.Stage,
+                        Name = j.Name,
+                        RequiredResources = String.Join(", ", j.RequiredResources)
+                    })
+                    .ToList();
+
+                ConsoleTableBuilder
+                    .From(jobs)
+                    .WithFormat(ConsoleTableBuilderFormat.Minimal)
+                    .ExportAndWriteLine()
+                ;
+            }
         }
     }
 

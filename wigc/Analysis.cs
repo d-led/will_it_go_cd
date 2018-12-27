@@ -16,10 +16,26 @@ namespace wigc.analysis
         public string Uuid { get; internal set; }
     }
 
+    public class Job
+    {
+        public string Pipeline {get; internal set; } 
+        public string Stage { get; internal set; }
+        public string Name { get; internal set; }
+        public IEnumerable<string> RequiredResources { get; internal set; }
+    }
+
+    public class AgentScope
+    {
+        public string Id { get; internal set; }
+        public IEnumerable<analysis.Job> Jobs { get; internal set; }
+    }
+
+
     public class Analysis
     {
         Cruise gocd;
         Dictionary<string,IEnumerable<string>> EnvironmentToAgents;
+        IEnumerable<analysis.Job> AllJobs;
 
         public static Analysis OfXMLFile(string filename)
         {
@@ -29,12 +45,26 @@ namespace wigc.analysis
         Analysis(Cruise g)
         {
             gocd = g;
+
+            // mapping the environments to agents
             EnvironmentToAgents = gocd.Environments
                 .Environment.ToDictionary(
                     e => e.Name,
                     e=> e.Agents.Physical.Select(a => a.Uuid)
                 )
             ;
+
+            // collecting jobs
+            AllJobs = gocd.Pipelines.Pipeline.SelectMany(p=> {
+                return p.Stage.SelectMany(s => {
+                    return s.Jobs.Job.Select(j => new analysis.Job {
+                        Pipeline = p.Name,
+                        Name = j.Name,
+                        Stage = s.Name,
+                        RequiredResources = (j.Resources!=null && j.Resources.Resource!=null) ? j.Resources.Resource : Enumerable.Empty<string>()
+                    });
+                });
+            }).ToArray();
         }
 
         public IEnumerable<analysis.Agent> Agents
@@ -47,6 +77,17 @@ namespace wigc.analysis
                     Resources = a.Resources.Resource,
                     Environments = EnvironmentsForAgent(a),
                     Uuid = a.Uuid,
+                });
+            }
+        }
+
+        public IEnumerable<analysis.AgentScope> JobsToAgents
+        {
+            get
+            {
+                return gocd.Agents.Agent.Select(a => new analysis.AgentScope{
+                    Id = $"{a.Hostname} ({a.Uuid})",
+                    Jobs = AllJobs
                 });
             }
         }

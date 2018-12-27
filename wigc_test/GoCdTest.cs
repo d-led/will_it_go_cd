@@ -24,6 +24,11 @@ namespace wigc_test
                 .x(()=>{
                    analysis.Agents.Where(a=>a.Environments.Count()==1).Should().HaveCount(2); 
                 });
+
+            "Analysis todo..."
+                .x(() => {
+                    analysis.JobsToAgents.Count();
+                });
         }
     }
 }
