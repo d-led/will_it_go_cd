@@ -1,6 +1,6 @@
 version: 1.0.{build}
 image: Visual Studio 2017
 build_script:
-  - cmd: dotnet test wigcd_test/
-  - cmd: dotnet run --project willitgocd/willitgocd.csproj -- help
-  - cmd: dotnet run --project willitgocd/willitgocd.csproj -- xml -f wigc_test/data/with_environments.xml
+  - cmd: dotnet test wigcd_test\wigc_test.csproj
+  - cmd: dotnet run --project willitgocd\willitgocd.csproj -- help
+  - cmd: dotnet run --project willitgocd\willitgocd.csproj -- xml -f wigc_test\data\with_environments.xml
