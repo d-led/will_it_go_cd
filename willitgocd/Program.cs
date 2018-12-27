@@ -53,7 +53,7 @@ namespace willitgocd
                 .ExportAndWriteLine()
             ;
 
-            var jobsBuiltByAgents = analysis.JobsToAgents;
+            var jobsBuiltByAgents = analysis.AgentScopes;
             foreach (var agentCapability in jobsBuiltByAgents) {
                 Console.WriteLine($"Jobs that can be built by {agentCapability.Id}:");
 
