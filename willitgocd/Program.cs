@@ -67,7 +67,7 @@ namespace willitgocd
 
         void ShowJobsWithoutAgents()
         {
-            Console.WriteLine("OOPS: the following jobs do not have an agent available to them!\n");
+            Console.WriteLine("<<OOPS>>: the following jobs do not have an agent available to them!\n");
             ShowJobs(analysis.JobsWithoutAgents);
         }
 
@@ -104,7 +104,7 @@ namespace willitgocd
                 if (agentCapability
                     .Jobs.Count() == 0)
                 {
-                    Console.WriteLine("OOPS: no jobs will run on this agent!\n");
+                    Console.WriteLine("<<OOPS>>: no jobs will run on this agent!\n");
                     continue;
                 }
 
