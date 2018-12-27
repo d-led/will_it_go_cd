@@ -28,7 +28,7 @@ namespace wigc_test
             "Then no agent not associated with an environment can build a job associated with one"
                 .x(() => {
                     foreach(var scope in analysis.AgentScopes
-                        .Where(e=>analysis.AgentWithoutEnvironment(e.Uuid))) {
+                        .Where(e=>analysis.AgentWithoutEnvironment(e.Agent.Uuid))) {
                             scope
                                 .Jobs
                                 .Where(j => j.Environments.Count()>0)
@@ -39,13 +39,15 @@ namespace wigc_test
             "And jobs associated with an environment can only run on agents part of at least one environment"
                 .x(() => {
                     foreach(var scope in analysis.AgentScopes
-                        .Where(e=>!analysis.AgentWithoutEnvironment(e.Uuid))) {
+                        .Where(e=>!analysis.AgentWithoutEnvironment(e.Agent.Uuid))) {
                             scope
                                 .Jobs
                                 .Where(j => j.Environments.Count()>0)
                                 .Should().NotBeEmpty();
                         }
                 });
+
+            // more important properties?
         }
     }
 }

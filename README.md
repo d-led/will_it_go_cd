@@ -4,22 +4,22 @@
 
 > This is a little [GoCD](https://www.gocd.org) configuration analysis and audit helper tool
 
-# Motivation
+## Motivation
 
 GoCD is a very user friendly and sophisticated Continuous Integration / Continuous Delivery tool. GoCD allows gradual immersion in its features by means of sensible defaults and a very well documented [concept language](https://docs.gocd.org/current/introduction/concepts_in_go.html). When many features of GoCD are used, it is easy to overlook misconfigured pipelines, e.g. when there is no agent with the resource required by a job, or when a pipeline is not part of the environment, where the dedicated agent is configured. This tool should give a quick overview of certain aspects of the configuration
 
-# Current Queries
+## Current Queries
 
-- what agents are there and how are they configured (already, part of the GoCD UI)
-- which jobs can an agent potentially run
-- todo: which agents can a job run on
+- what agents are there and how are they configured? Summary, as it's already part of the GoCD UI.
+- misconfigured agents: which jobs can an agent potentially run?
+- capacity planning and misconfigured jobs: which agents can a job run on?
 
-# Guarantees
+## Guarantees
 
 - **NONE**
 - **No guarantees of fitness for any kind of task**, use at your own risk
 
-# Rough Plan
+## Rough Plan
 
 - apply variable interpolation
 - get the configuration from a URL

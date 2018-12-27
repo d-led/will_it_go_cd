@@ -40,6 +40,19 @@
             "problemMatcher": "$msCompile"
         },
         {
+            "label": "demo (without environments)",
+            "command": "dotnet run -- xml -f ../wigc_test/data/without_environments.xml",
+            "options": {
+                "cwd": "willitgocd"
+            },
+            "type": "shell",
+            "group": "build",
+            "presentation": {
+                "reveal": "silent"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
             "label": "test",
             "command": "dotnet test",
             "options": {
