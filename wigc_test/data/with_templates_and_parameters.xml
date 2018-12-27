@@ -129,7 +129,7 @@
               </exec>
             </tasks>
             <resources>
-              <resource>security</resource>
+              <resource>security_but_no_env</resource>
             </resources>
           </job>
         </jobs>
@@ -237,7 +237,7 @@
         <resource>gradle</resource>
         <resource>java</resource>
         <resource>lua</resource>
-        <resource>security</resource>
+        <resource>security_but_no_env</resource>
       </resources>
     </agent>
     <agent hostname="6bb34abe42aa" ipaddress="172.18.0.6" uuid="76b133b9-32b8-4673-ac43-c415bc69e69b">
