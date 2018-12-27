@@ -35,6 +35,9 @@ namespace wigc.analysis
     {
         Cruise gocd;
         Dictionary<string,IEnumerable<string>> EnvironmentToAgents;
+        Dictionary<string,IEnumerable<string>> AgentToEnvironments;
+        Dictionary<string,IEnumerable<string>> PipelineToEnvironments;
+
         IEnumerable<analysis.Job> AllJobs;
 
         public static Analysis OfXMLFile(string filename)
@@ -46,12 +49,28 @@ namespace wigc.analysis
         {
             gocd = g;
 
-            // mapping the environments to agents
+            // mapping environments to agents
             EnvironmentToAgents = gocd.Environments
                 .Environment.ToDictionary(
                     e => e.Name,
                     e=> e.Agents.Physical.Select(a => a.Uuid)
                 )
+            ;
+
+            // mapping agents to environments
+            AgentToEnvironments = EnvironmentToAgents
+                .SelectMany(e => e.Value.Select(a => new[]{a, e.Key}))
+                .GroupBy(e => e[0])
+                .ToDictionary(group=> group.Key, group => group.Select(e=> e[1]))
+            ;
+
+            // mapping pipelines to environments
+            PipelineToEnvironments = gocd.Environments
+                .Environment.SelectMany(e =>
+                    e.Pipelines.Pipeline.Select(p=>new[]{p.Name, e.Name})
+                )
+                .GroupBy(e => e[0])
+                .ToDictionary(group=> group.Key, group => group.Select(e=> e[1]))
             ;
 
             // collecting jobs
@@ -74,7 +93,7 @@ namespace wigc.analysis
                 return gocd.Agents.Agent.Select(a => new analysis.Agent {
                     Hostname = a.Hostname,
                     Ip = a.Ipaddress,
-                    Resources = a.Resources.Resource,
+                    Resources = (a.Resources!=null && a.Resources.Resource!=null) ? a.Resources.Resource : Enumerable.Empty<string>(),
                     Environments = EnvironmentsForAgent(a),
                     Uuid = a.Uuid,
                 });
@@ -85,10 +104,44 @@ namespace wigc.analysis
         {
             get
             {
-                return gocd.Agents.Agent.Select(a => new analysis.AgentScope{
-                    Id = $"{a.Hostname} ({a.Uuid})",
-                    Jobs = AllJobs
+                return Agents.Select(a => new analysis.AgentScope{
+                    Id = $"{a.Hostname}: {String.Join(",",a.Resources)} ({a.Uuid})",
+                    Jobs = JobsExecutableBy(a.Uuid)
                 });
+            }
+        }
+
+        private IEnumerable<Job> JobsExecutableBy(string AgentUuid)
+        {
+            // todo resources
+            return AllJobs.Where(j => SameOrNoEnvironment(AgentUuid,j));
+        }
+
+        private bool SameOrNoEnvironment(string AgentUuid, Job j)
+        {
+            try {
+                bool AgentNotInEnvironment = !AgentToEnvironments.ContainsKey(AgentUuid);
+                bool PipelineNotInEnvironment = !PipelineToEnvironments.ContainsKey(j.Pipeline);
+
+                // if both not in an environment, all ok
+                if (AgentNotInEnvironment && PipelineNotInEnvironment)
+                    return true;
+
+                // either one is not in an environment
+                if (AgentNotInEnvironment || PipelineNotInEnvironment)
+                    return false;
+            
+                var AgentEnvironments = new HashSet<string>(AgentToEnvironments[AgentUuid]);
+                var JobEnvironments = new HashSet<string>(PipelineToEnvironments[j.Pipeline]);
+
+                if (AgentEnvironments.Count==0 && JobEnvironments.Count == 0)
+                    return true;
+
+                return AgentEnvironments.Intersect(JobEnvironments).Count() > 0;
+            } catch (Exception e) {
+                // should not happen
+                Console.Error.WriteLine($"Should not have happened: {e}");
+                return false;
             }
         }
 

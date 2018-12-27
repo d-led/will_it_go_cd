@@ -16,11 +16,11 @@
                  "wigc_test/data/with_environments.xml"
             ],
             "cwd": "${workspaceFolder}",
-            "stopAtEntry": true,
+            "stopAtEntry": false,
             "console": "internalConsole"
         },
         {
-            "name": ".NET Core Launch (console)",
+            "name": ".NET Core Launch (console, test)",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
