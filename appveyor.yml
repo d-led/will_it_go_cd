@@ -3,5 +3,3 @@ image: Visual Studio 2017
 build_script:
 - cmd: >-
     dotnet test wigcd_test\wigc_test.csproj
-
-    dotnet run --project willitgocd\willitgocd.csproj -- xml -f wigc_test\data\with_environments.xml
