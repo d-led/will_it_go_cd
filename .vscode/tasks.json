@@ -1,0 +1,56 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "command": "dotnet build",
+            "type": "shell",
+            "group": "build",
+            "presentation": {
+                "reveal": "silent"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "run (help)",
+            "command": "dotnet run -- --help",
+            "options": {
+                "cwd": "willitgocd"
+            },
+            "type": "shell",
+            "group": "build",
+            "presentation": {
+                "reveal": "silent"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "demo (with environments)",
+            "command": "dotnet run -- xml -f ../wigc_test/data/with_environments.xml",
+            "options": {
+                "cwd": "willitgocd"
+            },
+            "type": "shell",
+            "group": "build",
+            "presentation": {
+                "reveal": "silent"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "test",
+            "command": "dotnet test",
+            "options": {
+                "cwd": "wigc_test"
+            },
+            "type": "shell",
+            "group": "test",
+            "presentation": {
+                "reveal": "silent"
+            },
+            "problemMatcher": "$msCompile"
+        }
+    ]
+}
