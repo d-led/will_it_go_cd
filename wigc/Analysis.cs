@@ -88,20 +88,36 @@ namespace wigc.analysis
                 new Dictionary<string, IEnumerable<string>>()
             ;
 
+            var templates = gocd
+                .Templates
+                .ToDictionary(t => t.Pipeline.Name, t => t.Pipeline.Stage)
+            ;
+
+
+
             // collecting jobs
             AllJobs = gocd.Pipelines.SelectMany(p =>
-                p.Pipeline.SelectMany(pp => pp.Stage.SelectMany(s =>
+                p.Pipeline.SelectMany(pp => ExpandTemplate(pp, templates).Stage.SelectMany(s =>
                     s.Jobs.Job.Select(j => new analysis.Job
-                        {
-                            Pipeline = pp.Name,
-                            Name = j.Name,
-                            Stage = s.Name,
-                            RequiredResources = (j.Resources != null && j.Resources.Resource != null) ? InterpolateResources(pp, j) : Enumerable.Empty<string>(),
-                            Environments = PipelineToEnvironments.ContainsKey(pp.Name) ? PipelineToEnvironments[pp.Name] : Enumerable.Empty<string>()
-                        }
+                    {
+                        Pipeline = pp.Name,
+                        Name = j.Name,
+                        Stage = s.Name,
+                        RequiredResources = (j.Resources != null && j.Resources.Resource != null) ? InterpolateResources(pp, j) : Enumerable.Empty<string>(),
+                        Environments = PipelineToEnvironments.ContainsKey(pp.Name) ? PipelineToEnvironments[pp.Name] : Enumerable.Empty<string>()
+                    }
                     )
                 ))
             ).ToArray();
+        }
+
+        private Pipeline ExpandTemplate(Pipeline pp, Dictionary<string, List<Stage>> templates)
+        {
+            if (pp.Stage.Count > 0)
+                return pp;
+
+            pp.Stage = templates[pp.Template];
+            return pp;
         }
 
         private IEnumerable<string> InterpolateResources(wigc.Pipeline p, wigc.Job j)
@@ -115,10 +131,10 @@ namespace wigc.analysis
             ;
         }
 
-        private IDictionary<string,string> ParametersOf(wigc.Pipeline p)
+        private IDictionary<string, string> ParametersOf(wigc.Pipeline p)
         {
-            if (p.Params==null || p.Params.Param == null)
-                return new Dictionary<string,string>();
+            if (p.Params == null || p.Params.Param == null)
+                return new Dictionary<string, string>();
             return p.Params.Param.ToDictionary(param => param.Name, param => param.Text);
         }
 
@@ -170,7 +186,7 @@ namespace wigc.analysis
             get
             {
                 var OkJobs = new HashSet<Job>(AgentsAvailableToJobs
-                    .Select(s=>s.Job)
+                    .Select(s => s.Job)
                 );
 
                 return AllJobs.Where(j => !OkJobs.Contains(j));

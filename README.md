@@ -13,6 +13,7 @@ GoCD is a very user friendly and sophisticated Continuous Integration / Continuo
 - what agents are there and how are they configured? Summary, as it's already part of the GoCD UI.
 - misconfigured agents: which jobs can an agent potentially run?
 - capacity planning and misconfigured jobs: which agents can a job run on?
+- `<<<OOPS>>>` on lonely jobs or agents
 
 ## Guarantees
 
@@ -23,7 +24,5 @@ GoCD is a very user friendly and sophisticated Continuous Integration / Continuo
 
 contributions with new analyses are welcome!
 
-- apply parameter interpolation
-- expand pipeline templates (good first issue)
 - get the configuration from a URL (good first issue)
 - get pipeline config from remote pipeline-as-code repos
