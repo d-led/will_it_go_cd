@@ -26,3 +26,23 @@ contributions with new analyses are welcome!
 
 - get the configuration from a URL (good first issue)
 - get pipeline config from remote pipeline-as-code repos
+
+## Example Output
+
+### Jobs Won't Run on any Agent
+
+```
+<<OOPS>>: the following jobs do not have an agent available to them!
+
+Pipeline  Stage         Name        RequiredResources     Environments
+----------------------------------------------------------------------
+security  defaultStage  defaultJob  security_but_no_env
+deploy    defaultStage  defaultJob  nonexistent_resource
+```
+
+### Agent Won't Take Any Jobs
+
+```
+Jobs that can be built by d659ae9960ba: r:(gradle,java,lua,security_but_no_env) e:(unused_environment) (094f39d1-7936-4100-b6d1-8ccb0048423b):
+<<OOPS>>: no jobs will run on this agent!
+```
