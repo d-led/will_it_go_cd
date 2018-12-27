@@ -1,7 +1,7 @@
 using System;
 using Xbehave;
 using FluentAssertions;
-using wigc;
+using wigc.analysis;
 using System.Xml.Serialization;
 using System.IO;
 using System.Linq;
@@ -13,12 +13,17 @@ namespace wigc_test
         const string withEnvironments = "../../../data/with_environments.xml";
 
         [Scenario]
-        public void TestWithEnvironments()
+        public void TestWithEnvironments(Analysis analysis)
         {
-            "Given nothing"
-                .x(()=>42.Should().Be(42));
+            "Given a config with environmens"
+                .x(()=>{
+                    analysis = Analysis.OfXMLFile(withEnvironments);
+                });
 
-            var analysis = Analysis.ofXMLFile(withEnvironments);
+            "Where two out of four agents belong to an environment"
+                .x(()=>{
+                   analysis.Agents.Where(a=>a.Environments.Count()==1).Should().HaveCount(2); 
+                });
         }
     }
 }

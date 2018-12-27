@@ -1,6 +1,6 @@
 ﻿using System;
 using CommandLine;
-using wigc;
+using wigc.analysis;
 using ConsoleTableExt;
 using System.Linq;
 
@@ -34,14 +34,15 @@ namespace willitgocd
         private void ProcessXml(string filename)
         {
             Console.WriteLine($"Processing {filename}");
-            proceedWith(Analysis.ofXMLFile(filename));
+            proceedWith(Analysis.OfXMLFile(filename));
         }
 
         private void proceedWith(Analysis analysis) {
             var agents = analysis.Agents.Select(a=>new {
                 Hostname = a.Hostname,
-                Ip = a.Ipaddress,
-                Resources = String.Join(", ", a.Resources.Resource),
+                Ip = a.Ip,
+                Resources = String.Join(", ", a.Resources),
+                Environments = String.Join(", ", a.Environments),
                 Uuid = a.Uuid
             });
 

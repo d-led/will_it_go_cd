@@ -10,7 +10,7 @@ namespace wigc
     
     http://www.apache.org/licenses/LICENSE-2.0
     */
-	[XmlRoot(ElementName="backup")]
+[XmlRoot(ElementName="backup")]
 	public class Backup {
 		[XmlAttribute(AttributeName="emailOnSuccess")]
 		public string EmailOnSuccess { get; set; }
@@ -197,7 +197,7 @@ namespace wigc
 	[XmlRoot(ElementName="environments")]
 	public class Environments {
 		[XmlElement(ElementName="environment")]
-		public Environment Environment { get; set; }
+		public List<Environment> Environment { get; set; }
 	}
 
 	[XmlRoot(ElementName="agent")]
