@@ -53,6 +53,19 @@
             "problemMatcher": "$msCompile"
         },
         {
+            "label": "demo (with templates and parameters)",
+            "command": "dotnet run -- xml -f ../wigc_test/data/with_templates_and_parameters.xml",
+            "options": {
+                "cwd": "willitgocd"
+            },
+            "type": "shell",
+            "group": "build",
+            "presentation": {
+                "reveal": "silent"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
             "label": "test",
             "command": "dotnet test",
             "options": {

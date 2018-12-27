@@ -34,8 +34,8 @@ namespace wigc.analysis
 
     public struct JobAgents
     {
-        public Job Job {get; internal set; }
-        public IEnumerable<Agent> Agents {get; internal set;}
+        public Job Job { get; internal set; }
+        public IEnumerable<Agent> Agents { get; internal set; }
     }
 
     public class Analysis
@@ -74,9 +74,13 @@ namespace wigc.analysis
             ;
 
             // mapping pipelines to environments
-            PipelineToEnvironments = gocd.Environments != null ? gocd.Environments
+            PipelineToEnvironments = (gocd.Environments != null && gocd.Environments
+                .Environment != null) ? gocd.Environments
                 .Environment.SelectMany(e =>
+                    (e.Pipelines != null) ?
                     e.Pipelines.Pipeline.Select(p => new[] { p.Name, e.Name })
+                    :
+                    Enumerable.Empty<string[]>()
                 )
                 .GroupBy(e => e[0])
                 .ToDictionary(group => group.Key, group => group.Select(e => e[1]))
@@ -85,20 +89,19 @@ namespace wigc.analysis
             ;
 
             // collecting jobs
-            AllJobs = gocd.Pipelines.Pipeline.SelectMany(p =>
-            {
-                return p.Stage.SelectMany(s =>
-                {
-                    return s.Jobs.Job.Select(j => new analysis.Job
-                    {
-                        Pipeline = p.Name,
-                        Name = j.Name,
-                        Stage = s.Name,
-                        RequiredResources = (j.Resources != null && j.Resources.Resource != null) ? j.Resources.Resource : Enumerable.Empty<string>(),
-                        Environments = PipelineToEnvironments.ContainsKey(p.Name) ? PipelineToEnvironments[p.Name] : Enumerable.Empty<string>()
-                    });
-                });
-            }).ToArray();
+            AllJobs = gocd.Pipelines.SelectMany(p =>
+                p.Pipeline.SelectMany(pp => pp.Stage.SelectMany(s =>
+                    s.Jobs.Job.Select(j => new analysis.Job
+                        {
+                            Pipeline = pp.Name,
+                            Name = j.Name,
+                            Stage = s.Name,
+                            RequiredResources = (j.Resources != null && j.Resources.Resource != null) ? j.Resources.Resource : Enumerable.Empty<string>(),
+                            Environments = PipelineToEnvironments.ContainsKey(pp.Name) ? PipelineToEnvironments[pp.Name] : Enumerable.Empty<string>()
+                        }
+                    )
+                ))
+            ).ToArray();
         }
 
         public IEnumerable<analysis.Agent> Agents
@@ -133,13 +136,26 @@ namespace wigc.analysis
             get
             {
                 return AgentScopes
-                    .SelectMany(s => s.Jobs.Select(j => new {Job = j, Agent = s.Agent}))
-                    .GroupBy(s=>s.Job)
-                    .Select(g => new analysis.JobAgents {
+                    .SelectMany(s => s.Jobs.Select(j => new { Job = j, Agent = s.Agent }))
+                    .GroupBy(s => s.Job)
+                    .Select(g => new analysis.JobAgents
+                    {
                         Job = g.Key,
-                        Agents = g.Select(e=>e.Agent)
+                        Agents = g.Select(e => e.Agent)
                     })
                 ;
+            }
+        }
+
+        public IEnumerable<analysis.Job> JobsWithoutAgents
+        {
+            get
+            {
+                var OkJobs = new HashSet<Job>(AgentsAvailableToJobs
+                    .Select(s=>s.Job)
+                );
+
+                return AllJobs.Where(j => !OkJobs.Contains(j));
             }
         }
 

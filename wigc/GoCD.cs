@@ -10,7 +10,7 @@ namespace wigc
     
     http://www.apache.org/licenses/LICENSE-2.0
     */
-[XmlRoot(ElementName="backup")]
+	[XmlRoot(ElementName="backup")]
 	public class Backup {
 		[XmlAttribute(AttributeName="emailOnSuccess")]
 		public string EmailOnSuccess { get; set; }
@@ -58,6 +58,20 @@ namespace wigc
 		public List<Configrepo> Configrepo { get; set; }
 	}
 
+	[XmlRoot(ElementName="param")]
+	public class Param {
+		[XmlAttribute(AttributeName="name")]
+		public string Name { get; set; }
+		[XmlText]
+		public string Text { get; set; }
+	}
+
+	[XmlRoot(ElementName="params")]
+	public class Params {
+		[XmlElement(ElementName="param")]
+		public List<Param> Param { get; set; }
+	}
+
 	[XmlRoot(ElementName="materials")]
 	public class Materials {
 		[XmlElement(ElementName="git")]
@@ -90,6 +104,12 @@ namespace wigc
 		public List<Fetchartifact> Fetchartifact { get; set; }
 	}
 
+	[XmlRoot(ElementName="resources")]
+	public class Resources {
+		[XmlElement(ElementName="resource")]
+		public List<string> Resource { get; set; }
+	}
+
 	[XmlRoot(ElementName="artifact")]
 	public class Artifact {
 		[XmlAttribute(AttributeName="type")]
@@ -108,12 +128,12 @@ namespace wigc
 	public class Job {
 		[XmlElement(ElementName="tasks")]
 		public Tasks Tasks { get; set; }
+		[XmlElement(ElementName="resources")]
+		public Resources Resources { get; set; }
 		[XmlElement(ElementName="artifacts")]
 		public Artifacts Artifacts { get; set; }
 		[XmlAttribute(AttributeName="name")]
 		public string Name { get; set; }
-		[XmlElement(ElementName="resources")]
-		public Resources Resources { get; set; }
 	}
 
 	[XmlRoot(ElementName="jobs")]
@@ -130,20 +150,18 @@ namespace wigc
 		public string Name { get; set; }
 	}
 
-	[XmlRoot(ElementName="resources")]
-	public class Resources {
-		[XmlElement(ElementName="resource")]
-		public List<string> Resource { get; set; }
-	}
-
 	[XmlRoot(ElementName="pipeline")]
 	public class Pipeline {
+		[XmlElement(ElementName="params")]
+		public Params Params { get; set; }
 		[XmlElement(ElementName="materials")]
 		public Materials Materials { get; set; }
 		[XmlElement(ElementName="stage")]
 		public List<Stage> Stage { get; set; }
 		[XmlAttribute(AttributeName="name")]
 		public string Name { get; set; }
+		[XmlAttribute(AttributeName="template")]
+		public string Template { get; set; }
 	}
 
 	[XmlRoot(ElementName="fetchartifact")]
@@ -168,6 +186,12 @@ namespace wigc
 		public List<Pipeline> Pipeline { get; set; }
 		[XmlAttribute(AttributeName="group")]
 		public string Group { get; set; }
+	}
+
+	[XmlRoot(ElementName="templates")]
+	public class Templates {
+		[XmlElement(ElementName="pipeline")]
+		public Pipeline Pipeline { get; set; }
 	}
 
 	[XmlRoot(ElementName="physical")]
@@ -219,7 +243,9 @@ namespace wigc
 		[XmlElement(ElementName="config-repos")]
 		public Configrepos Configrepos { get; set; }
 		[XmlElement(ElementName="pipelines")]
-		public Pipelines Pipelines { get; set; }
+		public List<Pipelines> Pipelines { get; set; }
+		[XmlElement(ElementName="templates")]
+		public List<Templates> Templates { get; set; }
 		[XmlElement(ElementName="environments")]
 		public Environments Environments { get; set; }
 		[XmlElement(ElementName="agents")]

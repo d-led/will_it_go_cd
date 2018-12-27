@@ -16,10 +16,14 @@ GoCD is a very user friendly and sophisticated Continuous Integration / Continuo
 
 ## Guarantees
 
-- **NONE**
+- **None**
 - **No guarantees of fitness for any kind of task**, use at your own risk
 
 ## Rough Plan
 
-- apply variable interpolation
-- get the configuration from a URL
+contributions with new analyses are welcome!
+
+- apply parameter interpolation
+- expand pipeline templates (good first issue)
+- get the configuration from a URL (good first issue)
+- get pipeline config from remote pipeline-as-code repos

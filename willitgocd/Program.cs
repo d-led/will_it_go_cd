@@ -3,6 +3,7 @@ using CommandLine;
 using wigc.analysis;
 using ConsoleTableExt;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace willitgocd
 {
@@ -60,6 +61,14 @@ namespace willitgocd
             ShowJobsBuiltByAgents();
             Separator();
             ShowAgentsAvailableToJobs();
+            Separator();
+            ShowJobsWithoutAgents();
+        }
+
+        void ShowJobsWithoutAgents()
+        {
+            Console.WriteLine("OOPS: the following jobs do not have an agent available to them!");
+            ShowJobs(analysis.JobsWithoutAgents);
         }
 
         void ShowAgentsAvailableToJobs()
@@ -82,6 +91,8 @@ namespace willitgocd
 
         void ShowJobsBuiltByAgents()
         {
+            Console.WriteLine("Jobs built by agents: \n");
+            
             var jobsBuiltByAgents = analysis.AgentScopes;
             foreach (var agentCapability in jobsBuiltByAgents)
             {
@@ -90,24 +101,35 @@ namespace willitgocd
 
                 Console.WriteLine($"Jobs that can be built by {Id}:");
 
-                var jobs = agentCapability
-                    .Jobs
-                    .Select(j => new
-                    {
-                        Pipeline = j.Pipeline,
-                        Stage = j.Stage,
-                        Name = j.Name,
-                        RequiredResources = String.Join(", ", j.RequiredResources),
-                        Environments = String.Join(", ", j.Environments)
-                    })
-                    .ToList();
+                if (agentCapability
+                    .Jobs.Count() == 0)
+                {
+                    Console.WriteLine("OOPS: no jobs will run on this agent!\n");
+                    continue;
+                }
 
-                ConsoleTableBuilder
-                    .From(jobs)
-                    .WithFormat(ConsoleTableBuilderFormat.Minimal)
-                    .ExportAndWriteLine()
-                ;
+                ShowJobs(agentCapability.Jobs);
             }
+        }
+
+        private static void ShowJobs(IEnumerable<Job> selectedJobs)
+        {
+            var jobs = selectedJobs
+                .Select(j => new
+                {
+                    Pipeline = j.Pipeline,
+                    Stage = j.Stage,
+                    Name = j.Name,
+                    RequiredResources = String.Join(", ", j.RequiredResources),
+                    Environments = String.Join(", ", j.Environments)
+                })
+                .ToList();
+
+            ConsoleTableBuilder
+                .From(jobs)
+                .WithFormat(ConsoleTableBuilderFormat.Minimal)
+                .ExportAndWriteLine()
+            ;
         }
 
         static void Separator()
