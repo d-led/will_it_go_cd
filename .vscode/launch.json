@@ -18,6 +18,20 @@
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,
             "console": "internalConsole"
+        },{
+            "name": ".NET Core Launch (console, interpolation demo)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/willitgocd/bin/Debug/netcoreapp2.0/willitgocd.dll",
+            "args": [
+                "xml",
+                 "-f",
+                 "wigc_test/data/with_templates_and_parameters.xml"
+            ],
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": false,
+            "console": "internalConsole"
         },
         {
             "name": ".NET Core Launch (console, test)",

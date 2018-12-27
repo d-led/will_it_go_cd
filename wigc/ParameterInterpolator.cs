@@ -15,9 +15,12 @@ namespace wigc
 
         public string Substitute(string what) {
             Match m = token.Match(what);
-            if (m.Success && dict.ContainsKey(what)) {
-                return dict[m.Groups[1].Value];
-            }
+            if (!m.Success)
+                return what;
+
+            var key = m.Groups[1].Value;
+            if (dict.ContainsKey(key))
+                return dict[key];
 
             // no replacement
             return what;

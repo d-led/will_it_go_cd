@@ -67,7 +67,7 @@ namespace willitgocd
 
         void ShowJobsWithoutAgents()
         {
-            Console.WriteLine("OOPS: the following jobs do not have an agent available to them!");
+            Console.WriteLine("OOPS: the following jobs do not have an agent available to them!\n");
             ShowJobs(analysis.JobsWithoutAgents);
         }
 

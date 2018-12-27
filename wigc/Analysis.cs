@@ -96,12 +96,30 @@ namespace wigc.analysis
                             Pipeline = pp.Name,
                             Name = j.Name,
                             Stage = s.Name,
-                            RequiredResources = (j.Resources != null && j.Resources.Resource != null) ? j.Resources.Resource : Enumerable.Empty<string>(),
+                            RequiredResources = (j.Resources != null && j.Resources.Resource != null) ? InterpolateResources(pp, j) : Enumerable.Empty<string>(),
                             Environments = PipelineToEnvironments.ContainsKey(pp.Name) ? PipelineToEnvironments[pp.Name] : Enumerable.Empty<string>()
                         }
                     )
                 ))
             ).ToArray();
+        }
+
+        private IEnumerable<string> InterpolateResources(wigc.Pipeline p, wigc.Job j)
+        {
+            var dict = ParametersOf(p);
+            var ip = new ParameterInterpolator(dict);
+            return j
+                .Resources
+                .Resource
+                .Select(ip.Substitute)
+            ;
+        }
+
+        private IDictionary<string,string> ParametersOf(wigc.Pipeline p)
+        {
+            if (p.Params==null || p.Params.Param == null)
+                return new Dictionary<string,string>();
+            return p.Params.Param.ToDictionary(param => param.Name, param => param.Text);
         }
 
         public IEnumerable<analysis.Agent> Agents
