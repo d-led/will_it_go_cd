@@ -1,10 +1,12 @@
 using System;
+using System.Collections.Generic;
 using Xbehave;
 using FluentAssertions;
 using wigc.analysis;
 using System.Xml.Serialization;
 using System.IO;
 using System.Linq;
+using wigc;
 
 namespace wigc_test
 {
@@ -48,6 +50,26 @@ namespace wigc_test
                 });
 
             // more important properties?
+        }
+
+        [Scenario]
+        public void ReplacingParametersInStrings() {
+            "GoCD replaces tokens in configuration strings"
+                .x(()=>{
+                    var dict = new Dictionary<string,string>{
+                        {"unit", "42"},
+                        {"unit_resource", "my_resource"},
+                        {"#{unit_resource}", "x"},
+                    };
+
+                    var ip = new ParameterInterpolator(dict);
+                    ip.Substitute("unit").Should().Be("unit");
+                    ip.Substitute("#{unit_resource}").Should().Be("my_resource");
+                    ip.Substitute("unit_resource").Should().Be("unit_resource");
+
+                    // spaces not allowed (yet)
+                    ip.Substitute("#{unit_resource} ").Should().Be("#{unit_resource} ");
+                });
         }
     }
 }
