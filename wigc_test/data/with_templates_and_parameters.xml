@@ -184,6 +184,13 @@
       </stage>
     </pipeline>
   </templates>
+  <environments>
+    <environment name="unused_environment">
+      <agents>
+        <physical uuid="094f39d1-7936-4100-b6d1-8ccb0048423b" />
+      </agents>
+    </environment>
+  </environments>
   <agents>
     <agent hostname="28dbb3ac9b75" ipaddress="172.18.0.4" uuid="957fd2cd-7692-4e56-ac8c-fef8df1c4743">
       <resources>
@@ -201,6 +208,13 @@
       </resources>
     </agent>
     <agent hostname="d659ae9960ba" ipaddress="172.18.0.5" uuid="094f39d1-7936-4100-b6d1-8ccb0048423b">
+      <resources>
+        <resource>gradle</resource>
+        <resource>java</resource>
+        <resource>lua</resource>
+      </resources>
+    </agent>
+    <agent hostname="6bb34abe42aa" ipaddress="172.18.0.6" uuid="76b133b9-32b8-4673-ac43-c415bc69e69b">
       <resources>
         <resource>gradle</resource>
         <resource>java</resource>
