@@ -67,6 +67,9 @@ namespace willitgocd
 
         void ShowJobsWithoutAgents()
         {
+            if (analysis.JobsWithoutAgents.Count() == 0)
+                return;
+
             Console.WriteLine("<<OOPS>>: the following jobs do not have an agent available to them!\n");
             ShowJobs(analysis.JobsWithoutAgents);
         }
@@ -124,7 +127,7 @@ namespace willitgocd
                     Environments = String.Join(", ", j.Environments)
                 })
                 .ToList();
-
+    
             ConsoleTableBuilder
                 .From(jobs)
                 .WithFormat(ConsoleTableBuilderFormat.Minimal)
