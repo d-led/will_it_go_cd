@@ -90,6 +90,9 @@
                 <arg>7</arg>
               </exec>
             </tasks>
+            <resources>
+              <resource>test</resource>
+            </resources>
           </job>
         </jobs>
       </stage>
@@ -165,28 +168,28 @@
     </environment>
   </environments>
   <agents>
-    <agent hostname="51fca4fe2b7f" ipaddress="172.18.0.5" uuid="7bde17e8-da9f-41c1-9782-82b67c2a9a9d">
+    <agent hostname="in_environment_can_test" ipaddress="172.18.0.5" uuid="7bde17e8-da9f-41c1-9782-82b67c2a9a9d">
       <resources>
         <resource>java</resource>
         <resource>python</resource>
         <resource>test</resource>
       </resources>
     </agent>
-    <agent hostname="8a81c9dc5442" ipaddress="172.18.0.6" uuid="5da7efe8-b687-4e96-b178-30309e7a9463">
+    <agent hostname="in_environment_cannot_test" ipaddress="172.18.0.6" uuid="5da7efe8-b687-4e96-b178-30309e7a9463">
       <resources>
         <resource>gradle</resource>
         <resource>java</resource>
         <resource>lua</resource>
       </resources>
     </agent>
-    <agent hostname="227d5c6181de" ipaddress="172.18.0.4" uuid="87093b49-0e8f-464f-b61f-6e7c8b0a26a9">
+    <agent hostname="java_python_agent" ipaddress="172.18.0.4" uuid="87093b49-0e8f-464f-b61f-6e7c8b0a26a9">
       <resources>
         <resource>java</resource>
         <resource>python</resource>
         <resource>test</resource>
       </resources>
     </agent>
-    <agent hostname="d0d92577915e" ipaddress="172.18.0.3" uuid="0f597918-e3b4-4ba0-992c-d45721dc54bc">
+    <agent hostname="java_lua_agent" ipaddress="172.18.0.3" uuid="0f597918-e3b4-4ba0-992c-d45721dc54bc">
       <resources>
         <resource>gradle</resource>
         <resource>java</resource>

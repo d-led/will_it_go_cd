@@ -25,9 +25,15 @@ namespace wigc_test
                    analysis.Agents.Where(a=>a.Environments.Count()==1).Should().HaveCount(2); 
                 });
 
-            "Analysis todo..."
+            "Then no agent that is not part of an environment can build a job in an environment"
                 .x(() => {
-                    analysis.JobsToAgents.Count();
+                    foreach(var scope in analysis.AgentScopes
+                        .Where(e=>analysis.AgentWithoutEnvironment(e.Uuid))) {
+                            scope
+                                .Jobs
+                                .Where(j => j.Environments.Count()>0)
+                                .Should().BeEmpty();
+                        }
                 });
         }
     }

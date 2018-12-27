@@ -63,7 +63,8 @@ namespace willitgocd
                         Pipeline = j.Pipeline,
                         Stage = j.Stage,
                         Name = j.Name,
-                        RequiredResources = String.Join(", ", j.RequiredResources)
+                        RequiredResources = String.Join(", ", j.RequiredResources),
+                        Environments = String.Join(", ", j.Environments)
                     })
                     .ToList();
 

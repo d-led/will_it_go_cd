@@ -22,10 +22,13 @@ namespace wigc.analysis
         public string Stage { get; internal set; }
         public string Name { get; internal set; }
         public IEnumerable<string> RequiredResources { get; internal set; }
+
+        public IEnumerable<string> Environments { get; internal set; }
     }
 
     public class AgentScope
     {
+        public string Uuid {get; internal set; }
         public string Id { get; internal set; }
         public IEnumerable<analysis.Job> Jobs { get; internal set; }
     }
@@ -80,7 +83,8 @@ namespace wigc.analysis
                         Pipeline = p.Name,
                         Name = j.Name,
                         Stage = s.Name,
-                        RequiredResources = (j.Resources!=null && j.Resources.Resource!=null) ? j.Resources.Resource : Enumerable.Empty<string>()
+                        RequiredResources = (j.Resources!=null && j.Resources.Resource!=null) ? j.Resources.Resource : Enumerable.Empty<string>(),
+                        Environments = PipelineToEnvironments.ContainsKey(p.Name) ? PipelineToEnvironments[p.Name] : Enumerable.Empty<string>()
                     });
                 });
             }).ToArray();
@@ -100,21 +104,36 @@ namespace wigc.analysis
             }
         }
 
-        public IEnumerable<analysis.AgentScope> JobsToAgents
+        public IEnumerable<analysis.AgentScope> AgentScopes
         {
             get
             {
                 return Agents.Select(a => new analysis.AgentScope{
-                    Id = $"{a.Hostname}: {String.Join(",",a.Resources)} ({a.Uuid})",
-                    Jobs = JobsExecutableBy(a.Uuid)
+                    Uuid = a.Uuid,
+                    Id = $"{a.Hostname}: r:({String.Join(",",a.Resources)}) e:({String.Join(",", a.Environments)}) ({a.Uuid})",
+                    Jobs = JobsExecutableBy(a)
                 });
             }
         }
 
-        private IEnumerable<Job> JobsExecutableBy(string AgentUuid)
+        private IEnumerable<Job> JobsExecutableBy(Agent a)
         {
-            // todo resources
-            return AllJobs.Where(j => SameOrNoEnvironment(AgentUuid,j));
+            return AllJobs.Where(j =>
+                SameOrNoEnvironment(a.Uuid,j)
+                &&
+                AgentProvidesResources(a, j)
+            );
+        }
+
+        private bool AgentProvidesResources(Agent a, Job j)
+        {
+            if (j.RequiredResources.Count() == 0)
+                return true;
+
+            return new HashSet<string>(a.Resources)
+                .Intersect(j.RequiredResources)
+                .Count() == j.RequiredResources.Count()
+            ;
         }
 
         private bool SameOrNoEnvironment(string AgentUuid, Job j)
@@ -161,6 +180,12 @@ namespace wigc.analysis
             {
                 return (Cruise)serializer.Deserialize(reader);
             }
+        }
+
+        public bool AgentWithoutEnvironment(string uuid)
+        {
+            return !AgentToEnvironments.ContainsKey(uuid)
+                || AgentToEnvironments[uuid].Count() == 0;
         }
     }
 }
