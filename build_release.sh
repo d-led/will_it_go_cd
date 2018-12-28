@@ -33,3 +33,4 @@ zip -r "${origin}/${name}-win7-x64.zip" .
 cd $origin
 
 ls -rtl *.zip *.tgz
+
