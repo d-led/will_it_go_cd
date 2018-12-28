@@ -31,4 +31,5 @@ deploy:
   on:
     repo: d-led/will_it_go_cd
     tags: true
+    condition: $TRAVIS_OS_NAME = linux
   skip_cleanup: true
