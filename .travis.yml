@@ -18,3 +18,16 @@ script:
   - dotnet run --project willitgocd/willitgocd.csproj -- xml -f wigc_test/data/with_environments.xml
   - dotnet run --project willitgocd/willitgocd.csproj -- xml -f wigc_test/data/without_environments.xml
   - dotnet run --project willitgocd/willitgocd.csproj -- xml -f wigc_test/data/with_templates_and_parameters.xml
+  - if [ -z "$TRAVIS_TAG" ]; then true; else ./build_release.sh; fi
+
+deploy:
+  provider: releases
+  api_key:
+    secure: J2wFx8e32fT/bCwC0s1vPjZBowD41/zlSyaKYvY/wwhxb2GMCgVkrTG44ojno1azHVSCyzu0Lpa2yfCZSsWh4L05SL32BwWb7HOFjfDTjsmkawAbm7lOg99dB/6FLU7LPtDwavL6EozRSbxTIyQNbR4g0vLY0pQsEuAdX111a+W6WbLmWNlh6mjIC7diKjTrIoRjQC9XdTZ0uQ8sgJxjDr5VufbKvDalPbz/6o3ZhWwynZFy+5Zt8Z5Ddodk3d0Pu6Tp4iZRoIfzltjIuqZPF+rnhfMnQ7eJBLcyOrFZUIxIdUW+Bb4OyFDjv2hYpj3Y5KaeHGe09sQksiyDPUk3qtB0oUyKroL9PEA+Vv+SS/IoNqoh7p2jYXRg/f/AnPusN4ZdfqiNU+tS008oQkJqzpYSb8NihGvOMLjRtPB1Xl5klqMlzrNjnyOMEdqsOSppuEnLBXVr70HgiFF1iEND5QpOi5puxVEDj1xr2lK9usnJoNyDqdlq5Rbm2zj0PxSQAFQ1C8poG03FVap/A0UtVgXXpbndXk3Sl1vCAdJI0GqZe9HugFcKbty7eMnexOLNighm0ZgQuN5PZ8fAuL9c5apa4kwsUAOcrLLPR1yYu3Mh3lBtRb49kq1d8Oly7I27JzIttpRCfuRy6SJtyy01xlN+HNzyD4pLm57Si5EG1Hk=
+    file:
+      - willitgocd-linux-x64.tgz
+      - willitgocd-osx.10.12-x64.tgz
+      - willitgocd-win7-x64.zip
+  on:
+    repo: d-led/will_it_go_cd
+    tags: true
