@@ -43,7 +43,7 @@ deploy    defaultStage  defaultJob  nonexistent_resource
 ### Agent Won't Take Any Jobs
 
 ```
-Jobs that can be built by d659ae9960ba: r:(gradle,java,lua,security_but_no_env) e:(unused_environment) (094f39d1-7936-4100-b6d1-8ccb0048423b):
+Jobs that can be built by d659ae9960ba: r:(gradle,java,lua,security_but_no_env) e:(unused_environment) (...):
 <<OOPS>>: no jobs will run on this agent!
 ```
 
