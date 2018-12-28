@@ -14,7 +14,7 @@ os:
 
 script:
   - dotnet test wigc_test/wigc_test.csproj
-  - dotnet run --project willitgocd/willitgocd.csproj -- help || true
+  - dotnet run --project willitgocd/willitgocd.csproj -- --help || true
   - dotnet run --project willitgocd/willitgocd.csproj -- xml -f wigc_test/data/with_environments.xml
   - dotnet run --project willitgocd/willitgocd.csproj -- xml -f wigc_test/data/without_environments.xml
   - dotnet run --project willitgocd/willitgocd.csproj -- xml -f wigc_test/data/with_templates_and_parameters.xml
