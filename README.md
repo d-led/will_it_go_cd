@@ -75,3 +75,8 @@ Agents:
 - [.NET Core SDK](https://dotnet.microsoft.com) must be installed
 - release: on Linux or OSX: `./build_release.sh`
 - development: see the build tasks in [Visual Studio Code](https://code.visualstudio.com) and the CI config
+
+## GoCD Versions Known to Have Worked
+
+- 18.2.0
+- others may work too if the XML model is not too different from the current one
