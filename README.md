@@ -46,3 +46,9 @@ deploy    defaultStage  defaultJob  nonexistent_resource
 Jobs that can be built by d659ae9960ba: r:(gradle,java,lua,security_but_no_env) e:(unused_environment) (094f39d1-7936-4100-b6d1-8ccb0048423b):
 <<OOPS>>: no jobs will run on this agent!
 ```
+
+## Building
+
+- [.NET Core SDK](https://dotnet.microsoft.com) must be installed
+- release: on Linux or OSX: `./build_release.sh`
+- development: see the build tasks in [Visual Studio Code](https://code.visualstudio.com) and the CI config

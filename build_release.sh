@@ -31,3 +31,5 @@ cd willitgocd/bin/release/netcoreapp2.0/win7-x64/publish/
 echo "---=== now in $(pwd) ===---"
 zip -r "${origin}/${name}-win7-x64.zip" .
 cd $origin
+
+ls -rtl *.zip *.tgz
