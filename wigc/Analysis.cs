@@ -116,6 +116,11 @@ namespace wigc.analysis
             if (pp.Stage.Count > 0)
                 return pp;
 
+            if (!templates.ContainsKey(pp.Template)) {
+                Console.Error.WriteLine($"<<<OOPS>>>: pipeline: #{pp.Name} template {pp.Template} not found");
+                return pp;
+            }
+
             pp.Stage = templates[pp.Template];
             return pp;
         }
