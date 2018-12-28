@@ -13,7 +13,8 @@ GoCD is a very user friendly and sophisticated Continuous Integration / Continuo
 - what agents are there and how are they configured? Summary, as it's already part of the GoCD UI.
 - misconfigured agents: which jobs can an agent potentially run?
 - capacity planning and misconfigured jobs: which agents can a job run on?
-- `<<<OOPS>>>` on lonely jobs or agents
+- `<<<OOPS>>>` on lonely jobs or agents, or on no agents configured
+- the tool relies on GoCD having validated the XML beforehand, thus, it might crash on invalid / incompatible XML input
 
 ## Guarantees
 
@@ -26,6 +27,20 @@ contributions with new analyses are welcome!
 
 - get the configuration from a URL (good first issue)
 - get pipeline config from remote pipeline-as-code repos
+
+## Usage
+
+see
+
+```
+willitgocd --help
+```
+
+file analysis:
+
+```
+willitgocd xml -f <path_to>/server.xml
+```
 
 ## Example Output
 
@@ -45,6 +60,14 @@ deploy    defaultStage  defaultJob  nonexistent_resource
 ```
 Jobs that can be built by d659ae9960ba: r:(gradle,java,lua,security_but_no_env) e:(unused_environment) (...):
 <<OOPS>>: no jobs will run on this agent!
+```
+
+### No Agents Configured
+
+```
+Agents:
+
+<<<OOPS>>: no agents are configured
 ```
 
 ## Building
