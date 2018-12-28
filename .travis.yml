@@ -31,3 +31,4 @@ deploy:
   on:
     repo: d-led/will_it_go_cd
     tags: true
+  skip_cleanup: true
