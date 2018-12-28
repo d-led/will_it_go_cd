@@ -208,6 +208,22 @@
         </jobs>
       </stage>
     </pipeline>
+    <pipeline name="doc_template2">
+      <stage name="defaultStage">
+        <jobs>
+          <job name="defaultJob">
+            <tasks>
+              <exec command="sleep">
+                <arg>15</arg>
+              </exec>
+            </tasks>
+            <resources>
+              <resource>#{doc_resource}</resource>
+            </resources>
+          </job>
+        </jobs>
+      </stage>
+    </pipeline>
   </templates>
   <environments>
     <environment name="unused_environment">

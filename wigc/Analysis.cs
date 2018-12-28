@@ -90,10 +90,9 @@ namespace wigc.analysis
 
             var templates = gocd
                 .Templates
-                .ToDictionary(t => t.Pipeline.Name, t => t.Pipeline.Stage)
+                .SelectMany(t=>t.Pipeline)
+                .ToDictionary(p => p.Name, p => p.Stage)
             ;
-
-
 
             // collecting jobs
             AllJobs = gocd.Pipelines.SelectMany(p =>
@@ -117,7 +116,7 @@ namespace wigc.analysis
                 return pp;
 
             if (!templates.ContainsKey(pp.Template)) {
-                Console.Error.WriteLine($"<<<OOPS>>>: pipeline: #{pp.Name} template {pp.Template} not found");
+                Console.Error.WriteLine($"<<<OOPS>>>: pipeline: {pp.Name} template {pp.Template} not found");
                 return pp;
             }
 

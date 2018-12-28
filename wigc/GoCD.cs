@@ -191,7 +191,7 @@ namespace wigc
 	[XmlRoot(ElementName="templates")]
 	public class Templates {
 		[XmlElement(ElementName="pipeline")]
-		public Pipeline Pipeline { get; set; }
+		public List<Pipeline> Pipeline { get; set; }
 	}
 
 	[XmlRoot(ElementName="physical")]
