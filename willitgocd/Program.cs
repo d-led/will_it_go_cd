@@ -29,7 +29,7 @@ namespace willitgocd
             }
             catch (Exception e)
             {
-                Console.Error.WriteLine(e);
+                Console.Error.WriteLine($"<<<OOPS>>: an error happened: {e}");
                 return 1;
             }
         }
@@ -77,6 +77,8 @@ namespace willitgocd
 
         void ShowAgentsAvailableToJobs()
         {
+            Console.WriteLine("Agents available to jobs: \n");
+
             var jobs = analysis.AgentsAvailableToJobs;
             foreach (var job in jobs)
             {
@@ -146,6 +148,11 @@ namespace willitgocd
         void ShowAgents()
         {
             Console.WriteLine("Agents:\n");
+            if (analysis.Agents.Count() == 0) {
+                Console.Error.WriteLine($"<<<OOPS>>: no agents are configured");
+                return;
+            }
+
             ShowAgents(analysis.Agents);
         }
 

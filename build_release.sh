@@ -4,7 +4,7 @@ IFS=$'\n\t'
 
 name="willitgocd"
 origin=$(pwd)
-version=0.0.1
+version=0.0.2
 
 echo "---=== origin: ${origin} ===---"
 
