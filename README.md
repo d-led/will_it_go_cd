@@ -1,6 +1,7 @@
 # Will it GoCD?
 
 [![Build Status](https://travis-ci.org/d-led/will_it_go_cd.svg?branch=master)](https://travis-ci.org/d-led/will_it_go_cd) [![Build status](https://ci.appveyor.com/api/projects/status/bdhlyf1x1aij6c6u/branch/master?svg=true)](https://ci.appveyor.com/project/d-led/will-it-go-cd/branch/master)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fd-led%2Fwill_it_go_cd.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fd-led%2Fwill_it_go_cd?ref=badge_shield)
 
 > This is a little [GoCD](https://www.gocd.org) configuration analysis, sanity check and audit helper tool
 
@@ -80,3 +81,7 @@ Agents:
 
 - 18.2.0
 - others may work too if the XML model is not too different from the current one
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fd-led%2Fwill_it_go_cd.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fd-led%2Fwill_it_go_cd?ref=badge_large)
