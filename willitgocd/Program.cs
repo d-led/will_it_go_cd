@@ -15,12 +15,18 @@ namespace willitgocd
             {
                 Parser.Default.Settings.MaximumDisplayWidth = 80;
                 return Parser.Default.ParseArguments<
-                    XmlArguments
+                    XmlArguments,
+                    ServerArguments
                 >(args)
                 .MapResult(
                     (XmlArguments opts) =>
                     {
                         ProcessXml(opts.Filename);
+                        return 0;
+                    },
+                    (ServerArguments opts) =>
+                    {
+                        ProcessServerXml(opts);
                         return 0;
                     },
                     err => 1
@@ -34,6 +40,12 @@ namespace willitgocd
             }
         }
 
+        private static void ProcessServerXml(ServerArguments opts)
+        {
+            Console.WriteLine($"Processing config of {opts.Server}");
+            proceedWith(AnalysisOfServerXML(opts));
+        }
+
         static void ProcessXml(string filename)
         {
             Console.WriteLine($"Processing {filename}");
@@ -43,6 +55,11 @@ namespace willitgocd
         static Analysis AnalysisOfXMLFile(string filename)
         {
             return new Analysis(new FileConfig(filename));
+        }
+
+        static Analysis AnalysisOfServerXML(ServerArguments opts)
+        {
+            return new Analysis(new ServerConfig(opts.Server, opts.Username, opts.Password, opts.SkipVerify));
         }
 
         static void proceedWith(Analysis analysis)
@@ -59,5 +76,21 @@ namespace willitgocd
     {
         [Option('f', "filename", Required = true, HelpText = "Path to the XML file to parse")]
         public string Filename { get; set; }
+    }
+
+    [Verb("server", HelpText = "parse a GoCD XML config from an URL and analyze")]
+    class ServerArguments
+    {
+        [Option('s', "server", Required = true, HelpText = "e.g. http://localhost:8153")]
+        public string Server { get; set; }
+
+        [Option('u', "username", Required = false)]
+        public string Username { get; set; }
+
+        [Option('p', "password", Required = false)]
+        public string Password { get; set; }
+
+        [Option('k', "skipverify", Required = false)]
+        public bool SkipVerify { get; set; }
     }
 }

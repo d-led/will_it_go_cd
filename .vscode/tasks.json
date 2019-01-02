@@ -66,6 +66,32 @@
             "problemMatcher": "$msCompile"
         },
         {
+            "label": "demo (localhost, http)",
+            "command": "dotnet run -- server -s http://localhost:8153",
+            "options": {
+                "cwd": "willitgocd"
+            },
+            "type": "shell",
+            "group": "build",
+            "presentation": {
+                "reveal": "silent"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "demo (localhost, httpS)",
+            "command": "dotnet run -- server -s https://localhost:8153 -k",
+            "options": {
+                "cwd": "willitgocd"
+            },
+            "type": "shell",
+            "group": "build",
+            "presentation": {
+                "reveal": "silent"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
             "label": "test",
             "command": "dotnet test",
             "options": {
