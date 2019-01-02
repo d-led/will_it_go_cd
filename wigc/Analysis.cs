@@ -47,10 +47,7 @@ namespace wigc.analysis
 
         IEnumerable<analysis.Job> AllJobs;
 
-        public static Analysis OfXMLFile(string filename)
-        {
-            return new Analysis(FromXMLFile(filename));
-        }
+        public Analysis(ConfigSource config) : this(config.Fetch()) {}
 
         Analysis(Cruise g)
         {
@@ -261,11 +258,7 @@ namespace wigc.analysis
 
         static Cruise FromXMLFile(string filename)
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(Cruise));
-            using (var reader = new FileStream(filename, FileMode.Open))
-            {
-                return (Cruise)serializer.Deserialize(reader);
-            }
+            return new FileConfig(filename).Fetch();
         }
 
         public bool AgentWithoutEnvironment(string uuid)

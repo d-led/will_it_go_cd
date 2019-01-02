@@ -19,7 +19,7 @@ namespace wigc_test
         {
             "Given a config with environmens"
                 .x(()=>{
-                    analysis = Analysis.OfXMLFile(withEnvironments);
+                    analysis = new Analysis(new FileConfig(withEnvironments));
                 });
 
             "Where two out of four agents belong to an environment"
