@@ -1,9 +1,6 @@
 ﻿using System;
 using CommandLine;
 using wigc.analysis;
-using ConsoleTableExt;
-using System.Linq;
-using System.Collections.Generic;
 
 namespace willitgocd
 {

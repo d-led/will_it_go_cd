@@ -1,10 +1,7 @@
-using System;
 using System.Collections.Generic;
 using Xbehave;
 using FluentAssertions;
 using wigc.analysis;
-using System.Xml.Serialization;
-using System.IO;
 using System.Linq;
 using wigc;
 
