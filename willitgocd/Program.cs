@@ -1,6 +1,7 @@
 ﻿using System;
 using CommandLine;
 using wigc.analysis;
+using wigc.console;
 
 namespace willitgocd
 {
@@ -32,7 +33,10 @@ namespace willitgocd
             }
             catch (Exception e)
             {
-                Console.Error.WriteLine($"<<<OOPS>>: an error happened: {e}");
+                using (new ScopedConsoleColor(ConsoleColor.Red))
+                {
+                    Console.Error.WriteLine($"<<<OOPS>>: an error happened: {e}");
+                }
                 return 1;
             }
         }

@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using System;
+using wigc.console;
 
 namespace wigc.analysis
 {
@@ -45,7 +46,7 @@ namespace wigc.analysis
 
         IEnumerable<analysis.Job> AllJobs;
 
-        public Analysis(ConfigSource config) : this(config.Fetch()) {}
+        public Analysis(ConfigSource config) : this(config.Fetch()) { }
 
         Analysis(Cruise g)
         {
@@ -85,7 +86,7 @@ namespace wigc.analysis
 
             var templates = gocd
                 .Templates
-                .SelectMany(t=>t.Pipeline)
+                .SelectMany(t => t.Pipeline)
                 .ToDictionary(p => p.Name, p => p.Stage)
             ;
 
@@ -110,8 +111,12 @@ namespace wigc.analysis
             if (pp.Stage.Count > 0)
                 return pp;
 
-            if (!templates.ContainsKey(pp.Template)) {
-                Console.Error.WriteLine($"<<<OOPS>>>: pipeline: {pp.Name} template {pp.Template} not found");
+            if (!templates.ContainsKey(pp.Template))
+            {
+                using (new ScopedConsoleColor(ConsoleColor.Red))
+                {
+                    Console.Error.WriteLine($"<<<OOPS>>>: pipeline: {pp.Name} template {pp.Template} not found");
+                }
                 return pp;
             }
 

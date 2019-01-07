@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using ConsoleTableExt;
+using wigc.console;
 using wigc.analysis;
 
 namespace willitgocd
@@ -32,7 +33,10 @@ namespace willitgocd
             if (analysis.JobsWithoutAgents.Count() == 0)
                 return;
 
-            Console.WriteLine("<<OOPS>>: the following jobs do not have an agent available to them!\n");
+            using (new ScopedConsoleColor(ConsoleColor.DarkYellow))
+            {
+                Console.WriteLine("<<OOPS>>: the following jobs do not have an agent available to them!\n");
+            }
             ShowJobs(analysis.JobsWithoutAgents);
         }
 
@@ -71,7 +75,10 @@ namespace willitgocd
                 if (agentCapability
                     .Jobs.Count() == 0)
                 {
-                    Console.WriteLine("<<OOPS>>: no jobs will run on this agent!\n");
+                    using (new ScopedConsoleColor(ConsoleColor.DarkYellow))
+                    {
+                        Console.WriteLine("<<OOPS>>: no jobs will run on this agent!\n");
+                    }
                     continue;
                 }
 
@@ -111,7 +118,9 @@ namespace willitgocd
             Console.WriteLine("Agents:\n");
             if (analysis.Agents.Count() == 0)
             {
-                Console.Error.WriteLine($"<<<OOPS>>: no agents are configured");
+                using (new ScopedConsoleColor(ConsoleColor.DarkYellow)) {
+                    Console.Error.WriteLine($"<<<OOPS>>: no agents are configured");
+                }
                 return;
             }
 
