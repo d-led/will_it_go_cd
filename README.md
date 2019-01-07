@@ -84,4 +84,7 @@ Agents:
 
 
 ## License
+
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fd-led%2Fwill_it_go_cd.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fd-led%2Fwill_it_go_cd?ref=badge_large)
+
+[FOSSA OSS Notice](https://app.fossa.io/attribution/a63a08d2-e0c3-4f55-8ff3-b959b89feffb)
