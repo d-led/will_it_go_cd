@@ -35,7 +35,7 @@ namespace willitgocd
             {
                 using (new ScopedConsoleColor(ConsoleColor.Red))
                 {
-                    Console.Error.WriteLine($"<<<OOPS>>: an error happened: {e}");
+                    Console.Error.WriteLine($"<<<OOPS>>: an error happened: {e.Message}");
                 }
                 return 1;
             }
